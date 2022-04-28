@@ -13,6 +13,12 @@ Vagrant.configure("2") do |config|
   config.vm.define :ansible do |ansible|
     ansible.vm.network :private_network, :ip => "192.168.56.12"
     ansible.vm.synced_folder "./data", "/vagrant_data"
+    ansible.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt install software-properties-common
+      add-apt-repository --yes --update ppa:ansible/ansible
+      apt install -y ansible
+    SHELL
   end
 
   config.vm.provider "virtualbox" do |vb|
